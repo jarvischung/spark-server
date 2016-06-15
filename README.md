@@ -3,8 +3,9 @@ Support Particle device and use docker solution.
 
 # How to use:
 ```
-docker pull jarvischung/spark-server
+docker pull jarvischung/spark-server:v1.0.0
 ```
+or
 ```
 docker run -it -p 8080:8080 "jarvischung/spark-server:v1.0.0"
 ```
