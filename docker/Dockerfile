@@ -26,4 +26,4 @@ ADD run_spark.sh ./
 # Run Spark-Server
 # RUN ./run_spark.sh 
 # /bin/sh -c "/run_spark.sh"
-ENTRYPOINT ["/bin/sh","-c","/run_spark.sh"]
+ENTRYPOINT ["/bin/sh","-c","/run_spark.sh",">>","/var/log/spark.log"]
