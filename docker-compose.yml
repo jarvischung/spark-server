@@ -1,0 +1,52 @@
+version: '2'
+
+### Creates a named network with the default bridge driver
+# The network is shared between restheart and mongodb only
+# See: https://docs.docker.com/engine/userguide/networking/dockernetworks/
+# See: https://docs.docker.com/engine/reference/commandline/network_create/
+networks:
+   backend:
+
+### Creates a permanent, named data volume
+# This makes much easier to identify where the mongodb data is stored on host
+# See: https://docs.docker.com/engine/userguide/containers/dockervolumes/#mount-a-shared-storage-volume-as-a-data-volume
+volumes:
+   datavolume:
+
+services:
+   sparkserver:
+      image: jarvischung/spark-server-docker:latest
+      depends_on:
+         - mongodb
+      networks:
+         - backend
+      ports:
+         - "8080:8080"
+   restheart:
+      image: softinstigate/restheart:latest
+      #build: .
+      ### Uncomment to name the container explicitly
+      #container_name: restheart
+      depends_on:
+         - mongodb
+      networks:
+         - backend
+      ports:
+         - "18080:8080"
+      ### Uncoment below if you want to mount a local configuration folder
+      ### to overwrite default restheart.yml and/or security.yml
+      #volumes:
+      #   - "$PWD"/etc:/opt/restheart/etc:ro
+
+   mongodb:
+      image: mongo:3.2
+      ### Uncomment to name the container explicitly
+      #container_name: restheart-mongo
+      volumes:
+         - datavolume:/data/db
+      networks:
+         - backend
+      ### As the mongo container starts unauthenticated, for security reasons comment out the below ports
+      ### so that mongodb can be accessed from restheart only
+      ports:
+         - "27017:27017"
