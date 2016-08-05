@@ -20,6 +20,10 @@ RUN cd /spark-server && wget "https://github.com/mfferreira/spark-protocol/archi
 RUN cd /spark-server && unzip master.zip && rm master.zip
 RUN cd /spark-server && npm install ./spark-protocol-master/ 
 
+# Install Particle-cli and js lib
+RUN npm install -g particle-cli
+RUN npm install -g particle-api-js
+
 # Add run script
 ADD run_spark.sh ./
 
